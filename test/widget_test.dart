@@ -16,7 +16,7 @@ void main() {
     await tester.pumpWidget(const NumeraApp());
 
     // Verify that the text field is present.
-    expect(find.text('Type math here...'), findsOneWidget);
+    expect(find.text('Type math or unit conversions...'), findsOneWidget);
 
     // Enter some text.
     await tester.enterText(find.byType(TextField), '2 + 2');
