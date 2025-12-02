@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Type math here...',
+                    hintText: 'Type math or unit conversions...',
                     hintStyle: TextStyle(color: Colors.white24),
                   ),
                   cursorColor: Colors.greenAccent,

@@ -35,4 +35,44 @@ void main() {
       expect(calculator.evaluateLine('2 + 2 ='), '4');
     });
   });
+
+  group('Unit Conversions', () {
+    final calculator = Calculator();
+
+    test('Time conversion: seconds to minutes', () {
+      expect(calculator.evaluateLine('200 seconds in minutes'), '3.3333 minutes');
+    });
+
+    test('Length conversion: cm to inches', () {
+      final result = calculator.evaluateLine('50 cm in inches');
+      expect(result, isNotNull);
+      expect(result, contains('inches'));
+    });
+
+    test('Length conversion: feet to meters', () {
+      final result = calculator.evaluateLine('10 ft in m');
+      expect(result, isNotNull);
+      expect(result, contains('m'));
+    });
+
+    test('Mass conversion: kg to pounds', () {
+      final result = calculator.evaluateLine('5 kg in lb');
+      expect(result, isNotNull);
+      expect(result, contains('lb'));
+    });
+
+    test('Temperature conversion: celsius to fahrenheit', () {
+      final result = calculator.evaluateLine('100 c in f');
+      expect(result, isNotNull);
+      expect(result, contains('f'));
+    });
+
+    test('Invalid unit conversion returns null', () {
+      expect(calculator.evaluateLine('50 invalid in units'), null);
+    });
+
+    test('Math still works with unit-like text', () {
+      expect(calculator.evaluateLine('2 + 2'), '4');
+    });
+  });
 }
