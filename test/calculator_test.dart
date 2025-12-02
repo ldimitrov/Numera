@@ -103,4 +103,57 @@ void main() {
       expect(calculator.evaluateLine('50 invalid in units'), '?');
     });
   });
+
+  group('Calculator - Variable Assignments', () {
+    late Calculator calculator;
+
+    setUp(() {
+      calculator = Calculator();
+    });
+
+    test('Assigns and returns value', () {
+      expect(calculator.evaluateLine('x = 10'), '10');
+    });
+
+    test('Uses assigned variable in expression', () {
+      calculator.evaluateLine('x = 5');
+      expect(calculator.evaluateLine('x + 3'), '8');
+    });
+
+    test('Assigns expression result to variable', () {
+      expect(calculator.evaluateLine('result = 2 + 3'), '5');
+    });
+
+    test('Uses multiple variables in expression', () {
+      calculator.evaluateLine('a = 10');
+      calculator.evaluateLine('b = 20');
+      expect(calculator.evaluateLine('c = a + b'), '30');
+    });
+
+    test('Variable names can contain underscores', () {
+      expect(calculator.evaluateLine('my_var = 42'), '42');
+    });
+
+    test('Handles complex expense calculation', () {
+      const input = '''power = 200
+rent = 1000
+water = 100
+shopping = 500
+expenses = power + rent + water + shopping''';
+      final results = calculator.processText(input);
+      expect(results, ['200', '1000', '100', '500', '1800']);
+    });
+
+    test('Reassigning variable updates value', () {
+      calculator.evaluateLine('x = 5');
+      expect(calculator.evaluateLine('x'), '5');
+      calculator.evaluateLine('x = 10');
+      expect(calculator.evaluateLine('x'), '10');
+    });
+
+    test('Variable in expression with operators', () {
+      calculator.evaluateLine('price = 100');
+      expect(calculator.evaluateLine('price * 1.15'), '115');
+    });
+  });
 }

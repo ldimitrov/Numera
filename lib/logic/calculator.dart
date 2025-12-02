@@ -15,14 +15,44 @@ class Calculator {
       line = line.substring(0, line.length - 1).trim();
     }
 
-    // Try to parse as unit conversion first
     String? conversionResult = _unitConverter.convert(line);
     if (conversionResult != null) {
       return conversionResult;
     }
 
-    // If not a conversion, try to evaluate as math expression
+    if (_isAssignment(line)) {
+      return _handleAssignment(line);
+    }
+
     return _evaluateMathExpression(line);
+  }
+
+  bool _isAssignment(String line) {
+    // Check if line contains '=' and has a valid variable name on the left
+    final assignmentPattern = RegExp(r'^([a-zA-Z_]\w*)\s*=\s*(.+)$');
+    return assignmentPattern.hasMatch(line);
+  }
+
+  String? _handleAssignment(String line) {
+    final assignmentPattern = RegExp(r'^([a-zA-Z_]\w*)\s*=\s*(.+)$');
+    final match = assignmentPattern.firstMatch(line);
+
+    if (match == null) return '?';
+
+    try {
+      final variableName = match.group(1)!;
+      final expression = match.group(2)!;
+
+      Expression exp = _parser.parse(expression);
+      double result = RealEvaluator(_context).evaluate(exp).toDouble();
+
+      // Store the variable in context
+      _context.bindVariable(Variable(variableName), Number(result));
+
+      return NumberFormatter.format(result);
+    } catch (e) {
+      return '?';
+    }
   }
 
   String? _evaluateMathExpression(String line) {
