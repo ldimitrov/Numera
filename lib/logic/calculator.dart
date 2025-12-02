@@ -31,7 +31,7 @@ class Calculator {
       double result = RealEvaluator(_context).evaluate(exp).toDouble();
       return NumberFormatter.format(result);
     } catch (e) {
-      return null;
+      return '?';
     }
   }
 

@@ -43,8 +43,8 @@ void main() {
       expect(result, isNot(contains('.')));
     });
 
-    test('Invalid expression returns null', () {
-      expect(calculator.evaluateLine('hello world'), null);
+    test('Invalid expression returns error indicator', () {
+      expect(calculator.evaluateLine('hello world'), '?');
     });
 
     test('Empty line returns null', () {
@@ -67,6 +67,12 @@ void main() {
       const input = '2 + 2\n3 * 3\n\n10 / 2';
       final results = calculator.processText(input);
       expect(results, ['4', '9', null, '5']);
+    });
+
+    test('Shows error indicator for incomplete expressions', () {
+      const input = '2 +\n5';
+      final results = calculator.processText(input);
+      expect(results, ['?', '5']);
     });
 
     test('Handles mix of math and conversions', () {
@@ -93,8 +99,8 @@ void main() {
       expect(calculator.evaluateLine('2 + 2'), '4');
     });
 
-    test('Invalid conversion returns null', () {
-      expect(calculator.evaluateLine('50 invalid in units'), null);
+    test('Invalid conversion returns error indicator', () {
+      expect(calculator.evaluateLine('50 invalid in units'), '?');
     });
   });
 }
